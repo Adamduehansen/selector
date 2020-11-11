@@ -40,13 +40,28 @@ describe('createSelector', () => {
   });
 
   describe('withId', () => {
-    // Arrange
-    const expectedSelector = '#any-id';
+    test('should set id in selector', () => {
+      // Arrange
+      const expectedSelector = '#any-id';
 
-    // Act
-    const actualSelector = createSeletor().withId('any-id').selector;
+      // Act
+      const actualSelector = createSeletor().withId('any-id').selector;
 
-    // Assert
-    expect(actualSelector).toEqual(expectedSelector);
+      // Assert
+      expect(actualSelector).toEqual(expectedSelector);
+    });
+  });
+
+  describe('withCssClass', () => {
+    test('should add classes to selector', () => {
+      // Arrange
+      const expectedSelector = '.any-class';
+
+      // Act
+      const actualSelector = createSeletor().withCssClass('any-class').selector;
+
+      // Assert
+      expect(actualSelector).toEqual(expectedSelector);
+    });
   });
 });

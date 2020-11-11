@@ -5,6 +5,7 @@ interface HtmlElementTagName {
 interface Select {
   tagname: string;
   id: string;
+  cssClasses: string[];
 }
 
 class Selector {
@@ -12,13 +13,16 @@ class Selector {
     {
       tagname: '',
       id: '',
+      cssClasses: new Array<string>(),
     },
   ];
 
   get selector(): string {
     const selectors = this.selectors.map((selector) => {
-      const { tagname, id } = selector;
-      return `${tagname}${id ? '#' + id : ''}`;
+      const { tagname, id, cssClasses } = selector;
+      return `${tagname}${id ? '#' + id : ''}${
+        cssClasses.length > 0 ? '.' + cssClasses.join('.') : ''
+      }`;
     });
     return selectors.join(',');
   }
@@ -48,6 +52,22 @@ class Selector {
           return {
             ...selector,
             id: id,
+          };
+        }
+      }
+    );
+    return this;
+  }
+
+  withCssClass(cssClassName: string): Selector {
+    this.selectors = this.selectors.map(
+      (selector, index): Select => {
+        if (index + 1 !== this.selectors.length) {
+          return selector;
+        } else {
+          return {
+            ...selector,
+            cssClasses: [...selector.cssClasses, cssClassName],
           };
         }
       }
