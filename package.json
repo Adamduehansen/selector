@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A library to help you make your selector",
   "scripts": {
-    "test": "jest"
+    "test": "jest --watch"
   },
   "repository": {
     "type": "git",
