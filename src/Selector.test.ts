@@ -38,4 +38,15 @@ describe('createSelector', () => {
       expect(actualSelector).toEqual(expectedSelector);
     });
   });
+
+  describe('withId', () => {
+    // Arrange
+    const expectedSelector = '#any-id';
+
+    // Act
+    const actualSelector = createSeletor().withId('any-id').selector;
+
+    // Assert
+    expect(actualSelector).toEqual(expectedSelector);
+  });
 });
