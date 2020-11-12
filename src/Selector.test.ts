@@ -37,6 +37,20 @@ describe('createSelector', () => {
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
     });
+
+    test('should add tagname and id', () => {
+      // Arrange
+      const expectedSelector = 'div#any-id';
+
+      // Act
+      const actualSelector = createSeletor()
+        .withTagname('div')
+        .and()
+        .withId('any-id').selector;
+
+      // Assert
+      expect(actualSelector).toEqual(expectedSelector);
+    });
   });
 
   describe('withId', () => {

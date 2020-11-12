@@ -8,76 +8,71 @@ interface Select {
   cssClasses: string[];
 }
 
-class Selector {
-  private selectors: Array<Select> = [
-    {
-      tagname: '',
-      id: '',
-      cssClasses: new Array<string>(),
-    },
-  ];
+abstract class Selector {
+  protected select: Select = {
+    tagname: '',
+    id: '',
+    cssClasses: new Array<string>(),
+  };
 
   get selector(): string {
-    const selectors = this.selectors.map((selector) => {
-      const { tagname, id, cssClasses } = selector;
-      return `${tagname}${id ? '#' + id : ''}${
-        cssClasses.length > 0 ? '.' + cssClasses.join('.') : ''
-      }`;
-    });
-    return selectors.join(',');
-  }
-
-  withTagname(tag: keyof HtmlElementTagName): Selector {
-    this.selectors = this.selectors.map(
-      (selector, index): Select => {
-        if (index + 1 !== this.selectors.length) {
-          return selector;
-        } else {
-          return {
-            ...selector,
-            tagname: tag,
-          };
-        }
-      }
-    );
-    return this;
-  }
-
-  withId(id: string): Selector {
-    this.selectors = this.selectors.map(
-      (selector, index): Select => {
-        if (index + 1 !== this.selectors.length) {
-          return selector;
-        } else {
-          return {
-            ...selector,
-            id: id,
-          };
-        }
-      }
-    );
-    return this;
-  }
-
-  withCssClass(cssClassName: string): Selector {
-    this.selectors = this.selectors.map(
-      (selector, index): Select => {
-        if (index + 1 !== this.selectors.length) {
-          return selector;
-        } else {
-          return {
-            ...selector,
-            cssClasses: [...selector.cssClasses, cssClassName],
-          };
-        }
-      }
-    );
-    return this;
+    const { tagname, id, cssClasses } = this.select;
+    return `${tagname}${id ? '#' + id : ''}${
+      cssClasses.length > 0 ? '.' + cssClasses.join('.') : ''
+    }`;
   }
 }
 
-const createSeletor = function (): Selector {
-  return new Selector();
+class TagSelector extends Selector {
+  constructor(tag: keyof HtmlElementTagName) {
+    super();
+    this.select.tagname = tag;
+  }
+
+  and(): TagAndConstrain {
+    return new TagAndConstrain(this.select.tagname);
+  }
+}
+
+class TagAndConstrain {
+  constructor(private tagname: string) {}
+
+  withId(id: string): IdSelector {
+    return new IdSelector(id, this.tagname);
+  }
+}
+
+class IdSelector extends Selector {
+  constructor(id: string, tagname = '') {
+    super();
+    this.select.tagname = tagname;
+    this.select.id = id;
+  }
+}
+
+class CssClassSelector extends Selector {
+  constructor(cssClassName: string) {
+    super();
+    this.select.cssClasses = [...this.select.cssClasses, cssClassName];
+  }
+}
+
+class AllSelector extends Selector {
+  withTagname(tag: keyof HtmlElementTagName): TagSelector {
+    return new TagSelector(tag);
+  }
+
+  withId(id: string): IdSelector {
+    return new IdSelector(id);
+  }
+
+  withCssClass(cssClassName: string): CssClassSelector {
+    return new CssClassSelector(cssClassName);
+  }
+}
+
+const createSeletor = function (): AllSelector {
+  return new AllSelector();
 };
 
 export default createSeletor;
