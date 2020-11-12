@@ -45,8 +45,7 @@ describe('createSelector', () => {
       // Act
       const actualSelector = createSeletor()
         .withTagname('div')
-        .and()
-        .withId('any-id').selector;
+        .and.withId('any-id').selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
@@ -59,8 +58,7 @@ describe('createSelector', () => {
       // Act
       const actualSelector = createSeletor()
         .withTagname('div')
-        .and()
-        .withCssClass('any-class').selector;
+        .and.withCssClass('any-class').selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);

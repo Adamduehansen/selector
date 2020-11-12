@@ -29,7 +29,7 @@ class TagSelector extends Selector {
     this.select.tagname = tag;
   }
 
-  and(): TagAndConstrain {
+  get and(): TagAndConstrain {
     return new TagAndConstrain(this.select.tagname);
   }
 }
