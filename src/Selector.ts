@@ -2,40 +2,42 @@ interface HtmlElementTagName {
   div: HTMLDivElement;
 }
 
+type HtmlElementTag = keyof HtmlElementTagName;
+
 interface Select {
-  tagname: string;
+  tagname?: HtmlElementTag;
   id: string;
   cssClasses: string[];
 }
 
 abstract class Selector {
   protected select: Select = {
-    tagname: '',
+    tagname: undefined,
     id: '',
     cssClasses: new Array<string>(),
   };
 
   get selector(): string {
     const { tagname, id, cssClasses } = this.select;
-    return `${tagname}${id ? '#' + id : ''}${
+    return `${tagname ?? ''}${id ? '#' + id : ''}${
       cssClasses.length > 0 ? '.' + cssClasses.join('.') : ''
     }`;
   }
 }
 
 class TagSelector extends Selector {
-  constructor(tag: keyof HtmlElementTagName) {
+  constructor(tag: HtmlElementTag) {
     super();
     this.select.tagname = tag;
   }
 
-  get and(): TagAndConstrain {
-    return new TagAndConstrain(this.select.tagname);
+  get and(): TagAndConstraint {
+    return new TagAndConstraint(this.select.tagname);
   }
 }
 
-class TagAndConstrain {
-  constructor(private tagname: string) {}
+class TagAndConstraint {
+  constructor(private tagname: HtmlElementTag) {}
 
   withId(id: string): IdSelector {
     return new IdSelector(id, this.tagname);
@@ -47,7 +49,7 @@ class TagAndConstrain {
 }
 
 class IdSelector extends Selector {
-  constructor(id: string, tagname = '') {
+  constructor(id: string, tagname: HtmlElementTag = undefined) {
     super();
     this.select.tagname = tagname;
     this.select.id = id;
@@ -55,7 +57,7 @@ class IdSelector extends Selector {
 }
 
 class CssClassSelector extends Selector {
-  constructor(cssClassName: string, tagname = '') {
+  constructor(cssClassName: string, tagname: HtmlElementTag = undefined) {
     super();
     this.select.tagname = tagname;
     this.select.cssClasses = [...this.select.cssClasses, cssClassName];
@@ -63,7 +65,7 @@ class CssClassSelector extends Selector {
 }
 
 class AllSelector extends Selector {
-  withTagname(tag: keyof HtmlElementTagName): TagSelector {
+  withTagname(tag: HtmlElementTag): TagSelector {
     return new TagSelector(tag);
   }
 
