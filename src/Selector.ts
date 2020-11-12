@@ -40,6 +40,10 @@ class TagAndConstrain {
   withId(id: string): IdSelector {
     return new IdSelector(id, this.tagname);
   }
+
+  withCssClass(cssClass: string): CssClassSelector {
+    return new CssClassSelector(cssClass, this.tagname);
+  }
 }
 
 class IdSelector extends Selector {
@@ -51,8 +55,9 @@ class IdSelector extends Selector {
 }
 
 class CssClassSelector extends Selector {
-  constructor(cssClassName: string) {
+  constructor(cssClassName: string, tagname = '') {
     super();
+    this.select.tagname = tagname;
     this.select.cssClasses = [...this.select.cssClasses, cssClassName];
   }
 }
