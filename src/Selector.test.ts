@@ -102,5 +102,18 @@ describe('createSelector', () => {
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
     });
+
+    test('should add additional classes to one selector with css class', () => {
+      // Arrange
+      const expectedSelector = '.any-css-class1.any-css-class2';
+
+      // Act
+      const actualSelector = createSeletor()
+        .withCssClass('any-css-class1')
+        .and.withCssClass('any-css-class2').selector;
+
+      // Assert
+      expect(actualSelector).toEqual(expectedSelector);
+    });
   });
 });
