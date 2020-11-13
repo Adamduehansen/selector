@@ -1,17 +1,3 @@
-/**
- *
- * API
- * createSelector().withTagname('div').selector           => div
- * createSelector().withId('any-id).selector              => #any-id
- * createSelector().withCssClass('any-class').selector    => .any-class
- * createSelector()
- *  .withTagname('div')
- *  .and()
- *  .withId('any-id')
- *  .selector                                             => div#any-id
- *
- */
-
 import createSeletor from './selector';
 
 describe('createSelector', () => {
@@ -38,7 +24,7 @@ describe('createSelector', () => {
       expect(actualSelector).toEqual(expectedSelector);
     });
 
-    test('should add tagname and id', () => {
+    test('should add tagname and id in selector', () => {
       // Arrange
       const expectedSelector = 'div#any-id';
 
@@ -51,7 +37,7 @@ describe('createSelector', () => {
       expect(actualSelector).toEqual(expectedSelector);
     });
 
-    test('should add tagname and css class', () => {
+    test('should add tagname and css class in selector', () => {
       // Arrange
       const expectedSelector = 'div.any-class';
 
@@ -66,12 +52,25 @@ describe('createSelector', () => {
   });
 
   describe('withId', () => {
-    test('should set id in selector', () => {
+    test('should add id in selector', () => {
       // Arrange
       const expectedSelector = '#any-id';
 
       // Act
       const actualSelector = createSeletor().withId('any-id').selector;
+
+      // Assert
+      expect(actualSelector).toEqual(expectedSelector);
+    });
+
+    test('should add id and class in selector', () => {
+      // Arrange
+      const expectedSelector = '#any-id.any-class';
+
+      // Act
+      const actualSelector = createSeletor()
+        .withId('any-id')
+        .and.withCssClass('any-class').selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);

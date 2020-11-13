@@ -54,12 +54,29 @@ class IdSelector extends Selector {
     this.select.tagname = tagname;
     this.select.id = id;
   }
+
+  get and(): IdAndConstraint {
+    return new IdAndConstraint(this.select.id);
+  }
+}
+
+class IdAndConstraint {
+  constructor(private id: string) {}
+
+  withCssClass(cssClass: string): CssClassSelector {
+    return new CssClassSelector(cssClass, undefined, this.id);
+  }
 }
 
 class CssClassSelector extends Selector {
-  constructor(cssClassName: string, tagname: HtmlElementTag = undefined) {
+  constructor(
+    cssClassName: string,
+    tagname: HtmlElementTag = undefined,
+    id: string = ''
+  ) {
     super();
     this.select.tagname = tagname;
+    this.select.id = id;
     this.select.cssClasses = [...this.select.cssClasses, cssClassName];
   }
 }
