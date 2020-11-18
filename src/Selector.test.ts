@@ -12,6 +12,17 @@ describe('createSelector', () => {
     expect(actualSelector).toEqual(expectedSelector);
   });
 
+  test('should create selector not with tag', () => {
+    // Arrange
+    const expectedSelector = ':not(div)';
+
+    // Act
+    const actualSelector = createSeletor().not.withTagname('div').selector;
+
+    // Assert
+    expect(actualSelector).toEqual(expectedSelector);
+  });
+
   describe('withTagname', () => {
     test('should set tagname in selector', () => {
       // Arrange

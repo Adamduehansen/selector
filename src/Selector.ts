@@ -10,6 +10,10 @@ interface Select {
   cssClasses: string[];
 }
 
+interface SelectorOptions {
+  not: boolean;
+}
+
 abstract class Selector {
   protected select: Select = {
     tagname: undefined,
@@ -19,15 +23,25 @@ abstract class Selector {
 
   get selector(): string {
     const { tagname, id, cssClasses } = this.select;
-    return `${tagname ?? ''}${id ? '#' + id : ''}${
-      cssClasses.length > 0 ? '.' + cssClasses.join('.') : ''
-    }`;
+    const idSelect = id ? '#' + id : '';
+    const cssClassSelect =
+      cssClasses.length > 0 ? '.' + cssClasses.join('.') : '';
+
+    let selector = `${tagname ?? ''}${idSelect}${cssClassSelect}`;
+
+    if (this.options.not) {
+      selector = `:not(${selector})`;
+    }
+
+    return selector;
   }
+
+  constructor(protected options: SelectorOptions) {}
 }
 
 class TagSelector extends Selector {
-  constructor(tag: HtmlElementTag) {
-    super();
+  constructor(tag: HtmlElementTag, options: SelectorOptions) {
+    super(options);
     this.select.tagname = tag;
   }
 
@@ -50,7 +64,9 @@ class TagAndConstraint {
 
 class IdSelector extends Selector {
   constructor(id: string, tagname: HtmlElementTag = undefined) {
-    super();
+    super({
+      not: false,
+    });
     this.select.tagname = tagname;
     this.select.id = id;
   }
@@ -78,7 +94,9 @@ class CssClassSelector extends Selector {
     tagname: HtmlElementTag = undefined,
     id: string = ''
   ) {
-    super();
+    super({
+      not: false,
+    });
     this.select.tagname = tagname;
     this.select.id = id;
     this.select.cssClasses = [...this.select.cssClasses, cssClassName];
@@ -107,8 +125,18 @@ class CssClassAndConstraint {
 }
 
 class AllSelector extends Selector {
+  get not(): AllSelector {
+    return new AllSelector({
+      not: true,
+    });
+  }
+
+  constructor(options: SelectorOptions) {
+    super(options);
+  }
+
   withTagname(tag: HtmlElementTag): TagSelector {
-    return new TagSelector(tag);
+    return new TagSelector(tag, this.options);
   }
 
   withId(id: string): IdSelector {
@@ -121,7 +149,9 @@ class AllSelector extends Selector {
 }
 
 const createSeletor = function (): AllSelector {
-  return new AllSelector();
+  return new AllSelector({
+    not: false,
+  });
 };
 
 export default createSeletor;
