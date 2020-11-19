@@ -109,21 +109,33 @@ class CssClassSelector extends Selector {
 
   get and(): CssClassAndConstraint {
     const { tagname, id, cssClasses } = this.select;
-    return new CssClassAndConstraint(cssClasses, tagname, id);
+    return new CssClassAndConstraint(cssClasses, this.options, tagname, id);
   }
 }
 
 class CssClassAndConstraint {
   constructor(
     private cssClasses: string[],
+    private options: SelectorOptions,
     private tagname: HtmlElementTag = undefined,
     private id: string
   ) {}
 
+  get not(): CssClassAndConstraint {
+    return new CssClassAndConstraint(
+      this.cssClasses,
+      {
+        not: true,
+      },
+      this.tagname,
+      this.id
+    );
+  }
+
   withCssClass(cssClass: string): CssClassSelector {
     return new CssClassSelector(
       [...this.cssClasses, cssClass].join('.'),
-      undefined,
+      this.options,
       this.tagname,
       this.id
     );

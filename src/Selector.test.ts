@@ -46,6 +46,19 @@ describe('createSelector', () => {
     expect(actualSelector).toEqual(expectedSelector);
   });
 
+  test('should create selector not with multiple classes', () => {
+    // Arrange
+    const expectedSelector = ':not(.any-class1.any-class2)';
+
+    // Act
+    const actualSelector = createSeletor()
+      .not.withCssClass('any-class1')
+      .and.not.withCssClass('any-class2').selector;
+
+    // assert
+    expect(actualSelector).toEqual(expectedSelector);
+  });
+
   describe('withTagname', () => {
     test('should set tagname in selector', () => {
       // Arrange
