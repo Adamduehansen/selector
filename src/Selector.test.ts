@@ -34,6 +34,18 @@ describe('createSelector', () => {
     expect(actualSelector).toEqual(expectedSelector);
   });
 
+  test('should create selector not with css class', () => {
+    // Arrange
+    const expectedSelector = ':not(.any-class)';
+
+    // Act
+    const actualSelector = createSeletor().not.withCssClass('any-class')
+      .selector;
+
+    // Assert
+    expect(actualSelector).toEqual(expectedSelector);
+  });
+
   describe('withTagname', () => {
     test('should set tagname in selector', () => {
       // Arrange

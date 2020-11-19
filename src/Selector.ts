@@ -58,7 +58,7 @@ class TagAndConstraint {
   }
 
   withCssClass(cssClass: string): CssClassSelector {
-    return new CssClassSelector(cssClass, this.tagname);
+    return new CssClassSelector(cssClass, undefined, this.tagname);
   }
 }
 
@@ -88,19 +88,20 @@ class IdAndConstraint {
   ) {}
 
   withCssClass(cssClass: string): CssClassSelector {
-    return new CssClassSelector(cssClass, this.tagname, this.id);
+    return new CssClassSelector(cssClass, undefined, this.tagname, this.id);
   }
 }
 
 class CssClassSelector extends Selector {
   constructor(
     cssClassName: string,
+    options: SelectorOptions = {
+      not: false,
+    },
     tagname: HtmlElementTag = undefined,
     id: string = ''
   ) {
-    super({
-      not: false,
-    });
+    super(options);
     this.select.tagname = tagname;
     this.select.id = id;
     this.select.cssClasses = [...this.select.cssClasses, cssClassName];
@@ -122,6 +123,7 @@ class CssClassAndConstraint {
   withCssClass(cssClass: string): CssClassSelector {
     return new CssClassSelector(
       [...this.cssClasses, cssClass].join('.'),
+      undefined,
       this.tagname,
       this.id
     );
@@ -148,7 +150,7 @@ class AllSelector extends Selector {
   }
 
   withCssClass(cssClassName: string): CssClassSelector {
-    return new CssClassSelector(cssClassName);
+    return new CssClassSelector(cssClassName, this.options);
   }
 }
 
