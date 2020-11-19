@@ -23,6 +23,17 @@ describe('createSelector', () => {
     expect(actualSelector).toEqual(expectedSelector);
   });
 
+  test('should create selector not with id', () => {
+    // Arrange
+    const expectedSelector = ':not(#any-id)';
+
+    // Act
+    const actualSelector = createSeletor().not.withId('any-id').selector;
+
+    // Assert
+    expect(actualSelector).toEqual(expectedSelector);
+  });
+
   describe('withTagname', () => {
     test('should set tagname in selector', () => {
       // Arrange

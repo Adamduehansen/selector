@@ -54,7 +54,7 @@ class TagAndConstraint {
   constructor(private tagname: HtmlElementTag) {}
 
   withId(id: string): IdSelector {
-    return new IdSelector(id, this.tagname);
+    return new IdSelector(id, undefined, this.tagname);
   }
 
   withCssClass(cssClass: string): CssClassSelector {
@@ -63,10 +63,14 @@ class TagAndConstraint {
 }
 
 class IdSelector extends Selector {
-  constructor(id: string, tagname: HtmlElementTag = undefined) {
-    super({
+  constructor(
+    id: string,
+    options: SelectorOptions = {
       not: false,
-    });
+    },
+    tagname: HtmlElementTag = undefined
+  ) {
+    super(options);
     this.select.tagname = tagname;
     this.select.id = id;
   }
@@ -140,7 +144,7 @@ class AllSelector extends Selector {
   }
 
   withId(id: string): IdSelector {
-    return new IdSelector(id);
+    return new IdSelector(id, this.options);
   }
 
   withCssClass(cssClassName: string): CssClassSelector {
