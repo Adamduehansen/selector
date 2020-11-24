@@ -17,17 +17,17 @@ interface SelectorOptions {
 abstract class Selector {
   protected select: Select = {
     tagname: undefined,
-    id: '',
+    id: "",
     cssClasses: new Array<string>(),
   };
 
   get selector(): string {
     const { tagname, id, cssClasses } = this.select;
-    const idSelect = id ? '#' + id : '';
+    const idSelect = id ? "#" + id : "";
     const cssClassSelect =
-      cssClasses.length > 0 ? '.' + cssClasses.join('.') : '';
+      cssClasses.length > 0 ? "." + cssClasses.join(".") : "";
 
-    let selector = `${tagname ?? ''}${idSelect}${cssClassSelect}`;
+    let selector = `${tagname ?? ""}${idSelect}${cssClassSelect}`;
 
     if (this.options.not) {
       selector = `:not(${selector})`;
@@ -52,6 +52,10 @@ class TagSelector extends Selector {
 
 class TagAndConstraint {
   constructor(private tagname: HtmlElementTag) {}
+
+  get not(): TagAndConstraint {
+    return new TagAndConstraint(this.tagname);
+  }
 
   withId(id: string): IdSelector {
     return new IdSelector(id, undefined, this.tagname);
@@ -99,7 +103,7 @@ class CssClassSelector extends Selector {
       not: false,
     },
     tagname: HtmlElementTag = undefined,
-    id: string = ''
+    id: string = ""
   ) {
     super(options);
     this.select.tagname = tagname;
@@ -134,7 +138,7 @@ class CssClassAndConstraint {
 
   withCssClass(cssClass: string): CssClassSelector {
     return new CssClassSelector(
-      [...this.cssClasses, cssClass].join('.'),
+      [...this.cssClasses, cssClass].join("."),
       this.options,
       this.tagname,
       this.id

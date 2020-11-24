@@ -1,9 +1,9 @@
-import createSeletor from './selector';
+import createSeletor from "./selector";
 
-describe('createSelector', () => {
-  test('should have empty selector', () => {
+describe("createSelector", () => {
+  test("should have empty selector", () => {
     // Arrange
-    const expectedSelector = '';
+    const expectedSelector = "";
 
     // Act
     const actualSelector = createSeletor().selector;
@@ -12,152 +12,167 @@ describe('createSelector', () => {
     expect(actualSelector).toEqual(expectedSelector);
   });
 
-  test('should create selector not with tag', () => {
-    // Arrange
-    const expectedSelector = ':not(div)';
-
-    // Act
-    const actualSelector = createSeletor().not.withTagname('div').selector;
-
-    // Assert
-    expect(actualSelector).toEqual(expectedSelector);
-  });
-
-  test('should create selector not with id', () => {
-    // Arrange
-    const expectedSelector = ':not(#any-id)';
-
-    // Act
-    const actualSelector = createSeletor().not.withId('any-id').selector;
-
-    // Assert
-    expect(actualSelector).toEqual(expectedSelector);
-  });
-
-  test('should create selector not with css class', () => {
-    // Arrange
-    const expectedSelector = ':not(.any-class)';
-
-    // Act
-    const actualSelector = createSeletor().not.withCssClass('any-class')
-      .selector;
-
-    // Assert
-    expect(actualSelector).toEqual(expectedSelector);
-  });
-
-  test('should create selector not with multiple classes', () => {
-    // Arrange
-    const expectedSelector = ':not(.any-class1.any-class2)';
-
-    // Act
-    const actualSelector = createSeletor()
-      .not.withCssClass('any-class1')
-      .and.not.withCssClass('any-class2').selector;
-
-    // assert
-    expect(actualSelector).toEqual(expectedSelector);
-  });
-
-  describe('withTagname', () => {
-    test('should set tagname in selector', () => {
+  describe("not", () => {
+    test("should create selector not with tag", () => {
       // Arrange
-      const expectedSelector = 'div';
+      const expectedSelector = ":not(div)";
 
       // Act
-      const actualSelector = createSeletor().withTagname('div').selector;
+      const actualSelector = createSeletor().not.withTagname("div").selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
     });
 
-    test('should add tagname and id in selector', () => {
+    test("should create selector not with id", () => {
       // Arrange
-      const expectedSelector = 'div#any-id';
+      const expectedSelector = ":not(#any-id)";
+
+      // Act
+      const actualSelector = createSeletor().not.withId("any-id").selector;
+
+      // Assert
+      expect(actualSelector).toEqual(expectedSelector);
+    });
+
+    test("should create selector not with css class", () => {
+      // Arrange
+      const expectedSelector = ":not(.any-class)";
+
+      // Act
+      const actualSelector = createSeletor().not.withCssClass("any-class")
+        .selector;
+
+      // Assert
+      expect(actualSelector).toEqual(expectedSelector);
+    });
+
+    test("should create selector not with multiple classes", () => {
+      // Arrange
+      const expectedSelector = ":not(.any-class1.any-class2)";
 
       // Act
       const actualSelector = createSeletor()
-        .withTagname('div')
-        .and.withId('any-id').selector;
+        .not.withCssClass("any-class1")
+        .and.not.withCssClass("any-class2").selector;
+
+      // assert
+      expect(actualSelector).toEqual(expectedSelector);
+    });
+  });
+
+  describe("withTagname", () => {
+    test("should set tagname in selector", () => {
+      // Arrange
+      const expectedSelector = "div";
+
+      // Act
+      const actualSelector = createSeletor().withTagname("div").selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
     });
 
-    test('should add tagname and css class in selector', () => {
+    test("should add tagname and id in selector", () => {
       // Arrange
-      const expectedSelector = 'div.any-class';
+      const expectedSelector = "div#any-id";
 
       // Act
       const actualSelector = createSeletor()
-        .withTagname('div')
-        .and.withCssClass('any-class').selector;
+        .withTagname("div")
+        .and.withId("any-id").selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
     });
 
-    test('should add tagname, id and css class in selector', () => {
+    test("should add tagname and css class in selector", () => {
       // Arrange
-      const expectedSelector = 'div#any-id.any-class';
+      const expectedSelector = "div.any-class";
 
       // Act
       const actualSelector = createSeletor()
-        .withTagname('div')
-        .and.withId('any-id')
-        .and.withCssClass('any-class').selector;
+        .withTagname("div")
+        .and.withCssClass("any-class").selector;
+
+      // Assert
+      expect(actualSelector).toEqual(expectedSelector);
+    });
+
+    test("should add tagname, id and css class in selector", () => {
+      // Arrange
+      const expectedSelector = "div#any-id.any-class";
+
+      // Act
+      const actualSelector = createSeletor()
+        .withTagname("div")
+        .and.withId("any-id")
+        .and.withCssClass("any-class").selector;
+
+      // Assert
+      expect(actualSelector).toEqual(expectedSelector);
+    });
+
+    describe("not", () => {
+      // Arrange
+      const expectedSelector = "div:not(#any-id)";
+
+      // Act
+      const actualSelector = createSeletor()
+        .withTagname("div")
+        .and.not.withId("any-id").selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
     });
   });
 
-  describe('withId', () => {
-    test('should add id in selector', () => {
+  describe("withId", () => {
+    test("should add id in selector", () => {
       // Arrange
-      const expectedSelector = '#any-id';
+      const expectedSelector = "#any-id";
 
       // Act
-      const actualSelector = createSeletor().withId('any-id').selector;
+      const actualSelector = createSeletor().withId("any-id").selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
     });
 
-    test('should add id and class in selector', () => {
+    test("should add id and class in selector", () => {
       // Arrange
-      const expectedSelector = '#any-id.any-class';
+      const expectedSelector = "#any-id.any-class";
 
       // Act
       const actualSelector = createSeletor()
-        .withId('any-id')
-        .and.withCssClass('any-class').selector;
+        .withId("any-id")
+        .and.withCssClass("any-class").selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
     });
   });
 
-  describe('withCssClass', () => {
-    test('should add classes to selector', () => {
+  describe("withCssClass", () => {
+    test("should add classes to selector", () => {
       // Arrange
-      const expectedSelector = '.any-class';
+      const expectedSelector = ".any-class";
 
       // Act
-      const actualSelector = createSeletor().withCssClass('any-class').selector;
+      const actualSelector = createSeletor().withCssClass("any-class").selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
     });
 
-    test('should add additional classes to one selector with css class', () => {
+    test("should add additional classes to one selector with css class", () => {
       // Arrange
-      const expectedSelector = '.any-css-class1.any-css-class2';
+      const expectedSelector = ".any-css-class1.any-css-class2";
 
       // Act
       const actualSelector = createSeletor()
-        .withCssClass('any-css-class1')
-        .and.withCssClass('any-css-class2').selector;
+        .withCssClass("any-css-class1")
+        .and.withCssClass("any-css-class2").selector;
 
       // Assert
       expect(actualSelector).toEqual(expectedSelector);
